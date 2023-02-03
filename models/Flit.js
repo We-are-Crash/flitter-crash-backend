@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 //definir esquema de tweet
 
-const anuncioSchema = mongoose.Schema({
+const flitSchema = mongoose.Schema({
    id: { type: Number, index: true },
    id_user: { type: Number, index: true },
    timestamp: { type: Date, index: true },
@@ -13,3 +13,8 @@ const anuncioSchema = mongoose.Schema({
    
 });
 
+// crear el modelo
+const Flit = mongoose.model('Flit', flitSchema);
+
+// exportar el modelo
+module.exports = Flit;

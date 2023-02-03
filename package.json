@@ -6,19 +6,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
-    "dev": "cross-env DEBUG=nodeapp:* PORT=3000 nodemon ./bin/www",
-    "init-db":  "node ./init-db.js"
+    "dev": "DEBUG=nodeapp:* npm start",
+    "init-db": "node ./init-db.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
+    "cross-env": "^7.0.3",
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20",
     "mongodb": "^4.13.0",
-    "mongoose": "^6.8.3"
+    "mongoose": "^6.8.3",
+    "nodemon": "^2.0.20"
   }
 }
