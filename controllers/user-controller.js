@@ -160,6 +160,7 @@ const login = async (req, res, next) => {
     message: "Login Successful",
     user: existingUser,
     token: service.createToken(existingUser),
+    user: existingUser
   });
 };
 
