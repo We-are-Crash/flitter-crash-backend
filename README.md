@@ -121,6 +121,8 @@ Respuesta:
 }
 ```
 
+Para ver en detalle un usuario se utiliza el endpoint `/users/:userId`.
+
 Petición:
 
 ```
