@@ -121,6 +121,34 @@ Respuesta:
 }
 ```
 
+Para ver en detalle un usuario se utiliza el endpoint `/users/:userId`.
+
+Petición:
+
+```
+[GET] http://localhost:3000/users/63e2b5603fcc874c19069bf3/
+```
+
+Respuesta:
+
+```
+{
+    "successMessage": "Usuario obtenido.",
+    "user": {
+        "_id": "63e2b5603fcc874c19069bf3",
+        "name": "Sabri",
+        "email": "sabri@gmail.com",
+        "password": "$2a$10$MjLGida1obPjytOb8ZRIm.3NXJ147khrVU3.S1LOBDpxpKty1z/Iu",
+        "flits": [],
+        "peopleYouFollow": [],
+        "followers": [],
+        "__v": 2
+    }
+}
+```
+
+## Signup y Login con JWT
+
 Para crear un nuevo usuario, se puede usar el endpoint `/users/signup`. Ahora mismo admite tres parámetros, name, email y password.
 
 Petición:
@@ -151,23 +179,7 @@ Respuesta:
 }
 ```
 
-Para hacer el login, se puede usar el endpoint `/users/login`. Ahora mismo admite dos parámetros, email y password.
-
-```
-[POST] http://localhost:3000/users/login
-# Body
-{
-    "email": "juano1@flitt.com",
-    "password": "6789101112"
-}
-
-Respuesta
-{
-    "message": "Login Successful"
-}
-```
-
-## Auth with JWT
+Para hacer el login, se puede usar el endpoint `/users/login`. Admite dos parámetros, email y password.
 
 Petición:
 
@@ -180,13 +192,22 @@ Petición:
 }
 ```
 
-Respuesta
+Respuesta:
 
 ```
 {
     "message": "Login Successful",
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2M2UyYjU2MDNmY2M4NzRjMTkwNjliZjMiLCJpYXQiOjE2NzU4MDI0NDEsImV4cCI6MTY3NzAxMjA0MX0.Ta-TyzGo5frgtRZUwXnj5nkXFOoorQhTIcRchFK4090"
-
+    "user": {
+        "_id": "63e2b5603fcc874c19069bf3",
+        "name": "Sabri",
+        "email": "sabri@gmail.com",
+        "password": "$2a$10$MjLGida1obPjytOb8ZRIm.3NXJ147khrVU3.S1LOBDpxpKty1z/Iu",
+        "flits": [],
+        "peopleYouFollow": [],
+        "followers": [],
+        "__v": 2
+    },
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2M2UyYjU2MDNmY2M4NzRjMTkwNjliZjMiLCJpYXQiOjE2NzYwNTI3MzEsImV4cCI6MTY3NzI2MjMzMX0.j0xBmsX6uw8iXK2kqHPOtl8R9Y7jxFBnF79wGcK_bWw"
 }
 ```
 
@@ -204,7 +225,7 @@ Petición:
 }
 ```
 
-Respuesta
+Respuesta:
 
 ```
 {
@@ -224,7 +245,7 @@ Petición:
 }
 ```
 
-Respuesta
+Respuesta:
 
 ```
 {
