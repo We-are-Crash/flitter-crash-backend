@@ -59,7 +59,10 @@ const followUser = async (req, res, next) => {
 
     await userToFollow.save();
     await userFollowing.save();
-    res.status(200).json({ successMessage: "Usuario seguido." });
+    res.status(200).json({
+      successMessage: "Usuario seguido.",
+      followers: userToFollow.followers,
+    });
   } catch (error) {
     console.log(error);
     if (!error.statusCode) {
@@ -92,7 +95,10 @@ const unfollowUser = async (req, res, next) => {
 
     await userToUnfollow.save();
     await userUnfollowing.save();
-    res.status(200).json({ successMessage: "Usuario dejado de seguir." });
+    res.status(200).json({
+      successMessage: "Usuario dejado de seguir.",
+      followers: userToUnfollow.followers,
+    });
   } catch (error) {
     console.log(error);
     if (!error.statusCode) {
@@ -160,7 +166,7 @@ const login = async (req, res, next) => {
     message: "Login Successful",
     user: existingUser,
     token: service.createToken(existingUser),
-    user: existingUser
+    user: existingUser,
   });
 };
 
