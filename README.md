@@ -28,12 +28,13 @@ Respuesta:
     ]
 }
 ```
+
 ## Flits de Usuarios Seguidos
 
 Petición:
 
 ```
-[GET]http://localhost:3000/users//flitsPeopleYouFollow
+[GET] http://localhost:3000/users/flitsPeopleYouFollow
 ```
 
 Respuesta:
@@ -53,7 +54,6 @@ Respuesta:
     ]
 }
 ```
-
 
 Se puede crear un flit enviando un objeto a la misma ruta. Ahora mismo admite dos parámetros, id_user (que es una referencia a una id de un usuario) y message.
 
