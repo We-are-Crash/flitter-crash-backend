@@ -1,7 +1,9 @@
 const User = require("../models/User");
+const Flit = require("../models/Flit");
 const bcryptjs = require("bcryptjs");
 const service = require("../services/index");
 const mongoose = require("mongoose");
+const auth = require("../middlewares/auth");
 // console.log(service);
 
 const getAllUser = async (req, res, next) => {
@@ -164,6 +166,86 @@ const login = async (req, res, next) => {
   });
 };
 
+const getFlitsPeopleYouFollow = async (req, res, next) => {
+  //BUSCO TOKEN DE USUARIO LOGUEADO
+  
+  const token= req.headers.authorization.split(" ")[1]
+
+  //DECODIFICO EL PAYLOAD DEL TOKEN
+
+  function parseJwt (token) {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+}
+const payload =(parseJwt(token))
+
+//const requestAux= {
+//  params: {
+//    userId: payload.sub
+//  }
+//}
+//await getOneUser(requestAux,res,next)
+
+//CON ID OBTENIDO DEL TOKEN BUSCO EL USUARIO EN LA BASE DE DATOS  
+ try {
+  console.log(payload)
+  if (!mongoose.Types.ObjectId.isValid(payload.sub)) {
+    const error = new Error("No se pudo encontrar el usuario.");
+    error.statusCode = 404;
+    throw error;
+  }
+  const user = await User.findById(payload.sub);
+
+//RESPONDO CON ARRAY DE ID DE LOS USUARIOS SEGUIDOS
+
+  const peopleYouFollow = user.peopleYouFollow
+
+
+  
+  console.log("esta gente es las q sigues:" ,peopleYouFollow)
+
+  //RECORRER ARRAYAR DE ID de usuarios y obtengo array de ID de Flits
+  let arrIdFlits=[]
+  for (var i = 0; i < peopleYouFollow.length; i++) {
+    const user = await User.findById(peopleYouFollow[i].toString());
+    const idFlit= (user.flits).toString()
+    if (idFlit!==""){
+    arrIdFlits.push(idFlit) 
+  }
+  }
+
+//obtener contenido de flits 
+
+const arrFlits =[]
+for (var i = 0; i < arrIdFlits.length; i++) {
+  const flit = await Flit.findById(arrIdFlits[i].toString());
+  
+  arrFlits.push(flit) 
+}
+
+if (arrFlits==[]){ arrFlits="no hay Flits"}
+
+
+res.status(200).json({ 
+
+  successMessage: "FLITS DE PERSONAS SEGUIDAS POR TI", Flit: arrFlits });
+
+
+  
+ console.log (arrFlits)
+} catch (error) {
+  console.log(error);
+  if (!error.statusCode) {
+    error.statusCode = 500;
+  }
+  next(error);
+
+}
+
+
+
+  }  
+   
+
 module.exports = {
   getAllUser,
   signup,
@@ -171,4 +253,5 @@ module.exports = {
   getOneUser,
   followUser,
   unfollowUser,
+  getFlitsPeopleYouFollow
 };

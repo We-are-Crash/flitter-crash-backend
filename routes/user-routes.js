@@ -6,6 +6,7 @@ const auth = require("../middlewares/auth");
 //router.METHOD("/url", controller )
 console.log(auth);
 router.get("/", userController.getAllUser);
+router.get("/flitsPeopleYouFollow", userController.getFlitsPeopleYouFollow);
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.get("/private", auth, (req, res) => {

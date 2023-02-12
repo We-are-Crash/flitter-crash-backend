@@ -32,7 +32,8 @@ function decodeToken(token){
         } catch (err) {
             reject({
                 status:500,
-                message: "token invalido"
+                message: "token invalido",
+                token: token
             })
         }
     }
