@@ -99,7 +99,7 @@ const unfollowUser = async (req, res, next) => {
 
     const usUnfollowingIdx =
       userUnfollowing.peopleYouFollow.indexOf(userToUnfollowId);
-      userUnfollowing.peopleYouFollow.splice(usUnfollowingIdx, 1);
+    userUnfollowing.peopleYouFollow.splice(usUnfollowingIdx, 1);
 
     await userToUnfollow.save();
     await userUnfollowing.save();
@@ -137,6 +137,9 @@ const signup = async (req, res, next) => {
     email,
     password,
     password: hashedPassword,
+    bio: "Hola! Soy un nuevo usuario de Flitter 🐹",
+    avatar:
+      "https://images.pexels.com/photos/7130503/pexels-photo-7130503.jpeg?auto=compress&cs=tinysrgb&w=1600",
   });
   //encrypted password
   try {
@@ -205,7 +208,10 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    const user = await User.findById(payload.sub);
+    const user = await User.findById(payload.sub).populate("id_user", {
+      name: 1,
+      avatar: 1,
+    });
 
     //RESPONDO CON ARRAY DE ID DE LOS USUARIOS SEGUIDOS
 
