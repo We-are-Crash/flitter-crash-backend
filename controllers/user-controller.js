@@ -174,9 +174,12 @@ const login = async (req, res, next) => {
   delete  existingUser.password;
   return res.status(200).json({
     message: "Login Successful",
+    token: service.createToken(existingUser),
     user: existingUser,
   });
 };
+
+
 
 const getFlitsPeopleYouFollow = async (req, res, next) => {
   //BUSCO TOKEN DE USUARIO LOGUEADO
@@ -190,16 +193,10 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
   }
   const payload = parseJwt(token);
 
-  //const requestAux= {
-  //  params: {
-  //    userId: payload.sub
-  //  }
-  //}
-  //await getOneUser(requestAux,res,next)
+  
 
   //CON ID OBTENIDO DEL TOKEN BUSCO EL USUARIO EN LA BASE DE DATOS
   try {
-    console.log(payload);
     if (!mongoose.Types.ObjectId.isValid(payload.sub)) {
       const error = new Error("No se pudo encontrar el usuario.");
       error.statusCode = 404;
@@ -210,8 +207,6 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
     //RESPONDO CON ARRAY DE ID DE LOS USUARIOS SEGUIDOS
 
     const peopleYouFollow = user.peopleYouFollow;
-
-    console.log("esta gente es las q sigues:", peopleYouFollow);
 
     //RECORRER ARRAYAR DE ID de usuarios y obtengo array de ID de Flits
     let arrIdFlits = [];
@@ -241,7 +236,6 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
       Flit: arrFlits,
     });
 
-    console.log(arrFlits);
   } catch (error) {
     console.log(error);
     if (!error.statusCode) {
@@ -259,4 +253,5 @@ module.exports = {
   followUser,
   unfollowUser,
   getFlitsPeopleYouFollow,
+  
 };
