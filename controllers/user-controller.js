@@ -169,11 +169,11 @@ const login = async (req, res, next) => {
   );
   if (!isPasswordCorrect) {
     return res.status(404).json({ message: "Incorrect password" });
-  }
+  };
+
+  delete  existingUser.password;
   return res.status(200).json({
     message: "Login Successful",
-    user: existingUser,
-    token: service.createToken(existingUser),
     user: existingUser,
   });
 };
