@@ -7,7 +7,7 @@ const auth = require("../middlewares/auth");
 router.get("/", userController.getAllUser);
 router.get("/flitsPeopleYouFollow", userController.getFlitsPeopleYouFollow);
 
-
+router.get("/userLogin", userController.getUserLogin);
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.get("/private", auth, (req, res) => {

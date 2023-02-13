@@ -179,7 +179,18 @@ const login = async (req, res, next) => {
   });
 };
 
-
+const getUserLogin = async (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  function parseJwt(token) {
+    return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
+  }
+   const payload = parseJwt(token);
+   const userId=payload.sub
+   const reqAux= {
+    params:{ userId  }
+  }
+   await getOneUser(reqAux,res,next)
+};
 
 const getFlitsPeopleYouFollow = async (req, res, next) => {
   //BUSCO TOKEN DE USUARIO LOGUEADO
@@ -253,5 +264,5 @@ module.exports = {
   followUser,
   unfollowUser,
   getFlitsPeopleYouFollow,
-  
+  getUserLogin
 };
