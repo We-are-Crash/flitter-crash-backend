@@ -4,9 +4,10 @@ const signup = require("../controllers/user-controller");
 const router = express.Router();
 const auth = require("../middlewares/auth");
 //router.METHOD("/url", controller )
-console.log(auth);
 router.get("/", userController.getAllUser);
 router.get("/flitsPeopleYouFollow", userController.getFlitsPeopleYouFollow);
+
+router.get("/userLogin", userController.getUserLogin);
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.get("/private", auth, (req, res) => {

@@ -172,13 +172,27 @@ const login = async (req, res, next) => {
   );
   if (!isPasswordCorrect) {
     return res.status(404).json({ message: "Incorrect password" });
-  }
+  };
+
+  delete  existingUser.password;
   return res.status(200).json({
     message: "Login Successful",
-    user: existingUser,
     token: service.createToken(existingUser),
     user: existingUser,
   });
+};
+
+const getUserLogin = async (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  function parseJwt(token) {
+    return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
+  }
+   const payload = parseJwt(token);
+   const userId=payload.sub
+   const reqAux= {
+    params:{ userId  }
+  }
+   await getOneUser(reqAux,res,next)
 };
 
 const getFlitsPeopleYouFollow = async (req, res, next) => {
@@ -193,16 +207,10 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
   }
   const payload = parseJwt(token);
 
-  //const requestAux= {
-  //  params: {
-  //    userId: payload.sub
-  //  }
-  //}
-  //await getOneUser(requestAux,res,next)
+  
 
   //CON ID OBTENIDO DEL TOKEN BUSCO EL USUARIO EN LA BASE DE DATOS
   try {
-    console.log(payload);
     if (!mongoose.Types.ObjectId.isValid(payload.sub)) {
       const error = new Error("No se pudo encontrar el usuario.");
       error.statusCode = 404;
@@ -213,8 +221,6 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
     //RESPONDO CON ARRAY DE ID DE LOS USUARIOS SEGUIDOS
 
     const peopleYouFollow = user.peopleYouFollow;
-
-    console.log("esta gente es las q sigues:", peopleYouFollow);
 
     //RECORRER ARRAYAR DE ID de usuarios y obtengo array de ID de Flits
     let arrIdFlits = [];
@@ -250,7 +256,6 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
       Flit: arrFlits,
     });
 
-    console.log(arrFlits);
   } catch (error) {
     console.log(error);
     if (!error.statusCode) {
@@ -268,4 +273,5 @@ module.exports = {
   followUser,
   unfollowUser,
   getFlitsPeopleYouFollow,
+  getUserLogin
 };
