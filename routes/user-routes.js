@@ -14,5 +14,5 @@ router.get("/private", auth, (req, res) => {
 });
 router.get("/:userId", userController.getOneUser);
 router.put("/:userId/follow", userController.followUser);
-router.delete("/:userId/unfollow", userController.unfollowUser);
+router.put("/:userId/unfollow", userController.unfollowUser);
 module.exports = router;

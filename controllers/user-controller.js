@@ -99,13 +99,13 @@ const unfollowUser = async (req, res, next) => {
 
     const usUnfollowingIdx =
       userUnfollowing.peopleYouFollow.indexOf(userToUnfollowId);
-    userUnfollowing.peopleYouFollow.splice(usUnfollowingIdx, 1);
+      userUnfollowing.peopleYouFollow.splice(usUnfollowingIdx, 1);
 
     await userToUnfollow.save();
     await userUnfollowing.save();
     res.status(200).json({
       successMessage: "Usuario dejado de seguir.",
-      peopleYouFollow: userFollowing.peopleYouFollow,
+      peopleYouFollow: userUnfollowing.peopleYouFollow,
     });
   } catch (error) {
     console.log(error);
