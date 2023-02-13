@@ -208,10 +208,7 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    const user = await User.findById(payload.sub).populate("id_user", {
-      name: 1,
-      avatar: 1,
-    });
+    const user = await User.findById(payload.sub);
 
     //RESPONDO CON ARRAY DE ID DE LOS USUARIOS SEGUIDOS
 
@@ -233,7 +230,13 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
 
     const arrFlits = [];
     for (var i = 0; i < arrIdFlits.length; i++) {
-      const flit = await Flit.findById(arrIdFlits[i].toString());
+      const flit = await Flit.findById(arrIdFlits[i].toString()).populate(
+        "id_user",
+        {
+          name: 1,
+          avatar: 1,
+        }
+      );
 
       arrFlits.push(flit);
     }
