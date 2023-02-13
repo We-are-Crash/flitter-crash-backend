@@ -16,7 +16,7 @@ app.use((req, res, next) => {
   // permite el acceso a la API desde fuera a todas las rutas (*)
   res.setHeader("Access-Control-Allow-Origin", "*");
   // permite a los accesos externos acceder a diferentes métodos
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   // permite el acceso a algunos headers
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
