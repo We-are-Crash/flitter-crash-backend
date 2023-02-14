@@ -224,44 +224,55 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
 
     const peopleYouFollow = user.peopleYouFollow;
 
-    //RECORRER ARRAYAR DE ID de usuarios y obtengo array de ID de Flits
-    let arrIdFlits = [];
-    for (var i = 0; i < peopleYouFollow.length; i++) {
-      const user = await User.findById(peopleYouFollow[i]);
-
-      const idFlit = user.flits;
-      if (idFlit !== "") {
-        idFlit.forEach((id) => {
-          console.log(id.toString());
-          arrIdFlits.push(id.toString());
-        });
-      }
-    }
-    console.log(arrIdFlits);
-
-    //obtener contenido de flits
-
-    const arrFlits = [];
-    for (var i = 0; i < arrIdFlits.length; i++) {
-      const flit = await Flit.findById(arrIdFlits[i].toString()).populate(
-        "id_user",
-        {
+    if (peopleYouFollow.length === 0) {
+      const flits = await Flit.find()
+        .populate("id_user", {
           name: 1,
           avatar: 1,
+        })
+        .sort({ createdAt: -1 });
+      res.status(200).json({
+        successMessage: "Lista de flits obtenida",
+        flits: flits,
+      });
+    } else {
+      //RECORRER ARRAYAR DE ID de usuarios y obtengo array de ID de Flits
+      let arrIdFlits = [];
+      for (var i = 0; i < peopleYouFollow.length; i++) {
+        const user = await User.findById(peopleYouFollow[i]);
+
+        const idFlit = user.flits;
+        if (idFlit !== "") {
+          idFlit.forEach((id) => {
+            console.log(id.toString());
+            arrIdFlits.push(id.toString());
+          });
         }
-      );
+      }
+      //obtener contenido de flits
 
-      arrFlits.push(flit);
+      const arrFlits = [];
+      for (var i = 0; i < arrIdFlits.length; i++) {
+        const flit = await Flit.findById(arrIdFlits[i].toString()).populate(
+          "id_user",
+          {
+            name: 1,
+            avatar: 1,
+          }
+        );
+
+        arrFlits.push(flit);
+      }
+
+      if (arrFlits == []) {
+        arrFlits = "no hay Flits";
+      }
+
+      res.status(200).json({
+        successMessage: "FLITS DE PERSONAS SEGUIDAS POR TI",
+        flits: arrFlits,
+      });
     }
-
-    if (arrFlits == []) {
-      arrFlits = "no hay Flits";
-    }
-
-    res.status(200).json({
-      successMessage: "FLITS DE PERSONAS SEGUIDAS POR TI",
-      Flit: arrFlits,
-    });
   } catch (error) {
     console.log(error);
     if (!error.statusCode) {
