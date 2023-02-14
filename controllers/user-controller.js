@@ -172,9 +172,9 @@ const login = async (req, res, next) => {
   );
   if (!isPasswordCorrect) {
     return res.status(404).json({ message: "Incorrect password" });
-  };
+  }
 
-  delete  existingUser.password;
+  delete existingUser.password;
   return res.status(200).json({
     message: "Login Successful",
     token: service.createToken(existingUser),
@@ -187,12 +187,12 @@ const getUserLogin = async (req, res, next) => {
   function parseJwt(token) {
     return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
   }
-   const payload = parseJwt(token);
-   const userId=payload.sub
-   const reqAux= {
-    params:{ userId  }
-  }
-   await getOneUser(reqAux,res,next)
+  const payload = parseJwt(token);
+  const userId = payload.sub;
+  const reqAux = {
+    params: { userId },
+  };
+  await getOneUser(reqAux, res, next);
 };
 
 const getFlitsPeopleYouFollow = async (req, res, next) => {
@@ -207,8 +207,6 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
   }
   const payload = parseJwt(token);
 
-  
-
   //CON ID OBTENIDO DEL TOKEN BUSCO EL USUARIO EN LA BASE DE DATOS
   try {
     if (!mongoose.Types.ObjectId.isValid(payload.sub)) {
@@ -218,6 +216,10 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
     }
     const user = await User.findById(payload.sub);
 
+    // const cosa = JSON.stringify(user.peopleYouFollow).split(",");
+
+    // console.log("Payload: " + typeof cosa);
+
     //RESPONDO CON ARRAY DE ID DE LOS USUARIOS SEGUIDOS
 
     const peopleYouFollow = user.peopleYouFollow;
@@ -225,12 +227,17 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
     //RECORRER ARRAYAR DE ID de usuarios y obtengo array de ID de Flits
     let arrIdFlits = [];
     for (var i = 0; i < peopleYouFollow.length; i++) {
-      const user = await User.findById(peopleYouFollow[i].toString());
-      const idFlit = user.flits.toString();
+      const user = await User.findById(peopleYouFollow[i]);
+
+      const idFlit = user.flits;
       if (idFlit !== "") {
-        arrIdFlits.push(idFlit);
+        idFlit.forEach((id) => {
+          console.log(id.toString());
+          arrIdFlits.push(id.toString());
+        });
       }
     }
+    console.log(arrIdFlits);
 
     //obtener contenido de flits
 
@@ -255,7 +262,6 @@ const getFlitsPeopleYouFollow = async (req, res, next) => {
       successMessage: "FLITS DE PERSONAS SEGUIDAS POR TI",
       Flit: arrFlits,
     });
-
   } catch (error) {
     console.log(error);
     if (!error.statusCode) {
@@ -273,5 +279,5 @@ module.exports = {
   followUser,
   unfollowUser,
   getFlitsPeopleYouFollow,
-  getUserLogin
+  getUserLogin,
 };
