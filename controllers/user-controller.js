@@ -104,11 +104,21 @@ const unfollowUser = async (req, res, next) => {
 
     await userToUnfollow.save();
     await userUnfollowing.save();
-    res.status(200).json({
-      successMessage: "Usuario dejado de seguir.",
-      peopleYouFollow: userUnfollowing.peopleYouFollow,
-      selectedUserFollowers: [] || userToUnfollow.followers,
-    });
+
+    if (!userToUnfollow.followers) {
+      console.log("Los followers son null");
+      res.status(200).json({
+        successMessage: "Usuario dejado de seguir.",
+        peopleYouFollow: userUnfollowing.peopleYouFollow,
+        selectedUserFollowers: [],
+      });
+    } else {
+      res.status(200).json({
+        successMessage: "Usuario dejado de seguir.",
+        peopleYouFollow: userUnfollowing.peopleYouFollow,
+        selectedUserFollowers: userToUnfollow.followers,
+      });
+    }
   } catch (error) {
     console.log(error);
     if (!error.statusCode) {
