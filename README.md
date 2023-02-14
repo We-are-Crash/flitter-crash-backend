@@ -1,5 +1,8 @@
 Repositorio backend para el proyecto final del bootcamp de Keepcoding
 
+### Frontend Github repository
+https://github.com/We-are-Crash/flitter-crash-frontend
+
 ## Flits
 
 Lista de todos los flits: se accede a partir del endpoint `/feed/flits`.
