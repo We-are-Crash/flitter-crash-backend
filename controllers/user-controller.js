@@ -70,6 +70,7 @@ const followUser = async (req, res, next) => {
     res.status(200).json({
       successMessage: "Usuario seguido.",
       peopleYouFollow: userFollowing.peopleYouFollow,
+      selectedUserFollowers: userToFollow.followers,
     });
   } catch (error) {
     console.log(error);
@@ -106,6 +107,7 @@ const unfollowUser = async (req, res, next) => {
     res.status(200).json({
       successMessage: "Usuario dejado de seguir.",
       peopleYouFollow: userUnfollowing.peopleYouFollow,
+      selectedUserFollowers: userToUnfollow.followers,
     });
   } catch (error) {
     console.log(error);
