@@ -107,7 +107,7 @@ const unfollowUser = async (req, res, next) => {
     res.status(200).json({
       successMessage: "Usuario dejado de seguir.",
       peopleYouFollow: userUnfollowing.peopleYouFollow,
-      selectedUserFollowers: userToUnfollow.followers,
+      selectedUserFollowers: [] || userToUnfollow.followers,
     });
   } catch (error) {
     console.log(error);
